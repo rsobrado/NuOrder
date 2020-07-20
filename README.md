@@ -22,6 +22,7 @@ Hooks optimization (use same hook for **issues** and **search bar**
 #### Limitations:
 Due to github API restriction total of issues is limited(100)
 'https://api.github.com/repos/facebook/react/issues?per_**page=100**&state=all'
+*this value can be modified in the code
 #### Maybe:
 CSS improvements
 - issue status indicator(open/close)
