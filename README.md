@@ -14,8 +14,8 @@ and results should be able to navigate via keyboard shortcuts. Each result shoul
 limited to, the issue’s title and labels.
 
 ### Installation
-run 'npm install
-run 'npm start'
+**run 'npm install**   
+**run 'npm start'**
 
 #### Pending:
 Hooks optimization (use same hook for **issues** and **search bar**
