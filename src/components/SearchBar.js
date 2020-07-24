@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import axios from 'axios'
+
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     margin: 0,
   },
-  groupUl:{
+  groupUl: {
     padding: 0,
     margin: 0,
   },
@@ -45,19 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   const classes = useStyles()
   const [issues, setIssues] = useState([])
-
   useEffect(() => {
-    async function loadData() {
-      const result = await axios(
-        'https://api.github.com/repos/facebook/react/issues?per_page=100&state=all'
-      )
-      setIssues(result.data)
-    }
-    loadData()
-  }, [])
+    setIssues(props.issues)
+  }, [props])
 
   return (
     <div style={{ width: '95%' }}>
@@ -70,7 +63,7 @@ export default function SearchBar() {
           option: classes.option,
           listbox: classes.listbox,
           popper: classes.popper,
-          groupUl: classes.groupUl
+          groupUl: classes.groupUl,
         }}
         renderInput={(params) => (
           <TextField

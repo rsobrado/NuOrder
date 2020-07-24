@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 
 import Container from '@material-ui/core/Container'
@@ -11,6 +12,8 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+
+import Pagination from '@material-ui/lab/Pagination'
 
 import SearchBar from './SearchBar'
 import Issues from './Issues'
@@ -45,6 +48,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles()
+  const [issues, setIssues] = useState([])
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    async function loadData() {
+      const result = await axios(
+        `https://api.github.com/search/issues?q=${value}+repo:facebook/react`
+      )
+      console.log(result.data)
+      setIssues(result.data.items)
+    }
+    loadData()
+  }, [])
 
   return (
     <Container maxWidth="lg">
@@ -61,14 +77,14 @@ export default function Dashboard() {
                     <TableCell>
                       <Grid container spacing={4} direction="row">
                         <Grid item xs={12} lg={12}>
-                          <SearchBar></SearchBar>
+                          <SearchBar issues={issues} />
                         </Grid>
                       </Grid>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <Issues></Issues>
+                  <Issues issues={issues} />
                 </TableBody>
               </Table>
             </TableContainer>
@@ -78,3 +94,4 @@ export default function Dashboard() {
     </Container>
   )
 }
+

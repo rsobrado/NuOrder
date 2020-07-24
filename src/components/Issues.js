@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
@@ -25,19 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Issues() {
+export default function Issues(props) {
   const classes = useStyles()
-  const [issues, setIssues] = useState(null)
+  const [issues, setIssues] = useState([])
 
   useEffect(() => {
-    async function loadData() {
-      const result = await axios(
-        'https://api.github.com/repos/facebook/react/issues?per_page=100&state=all'
-      )
-      setIssues(result.data)
-    }
-    loadData()
-  }, [])
+    setIssues(props.issues)
+  }, [props])
 
   return (
     <React.Fragment>
