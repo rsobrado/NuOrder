@@ -22,6 +22,7 @@ import Issues from './Issues'
 const useStyles = makeStyles((theme) => ({
   search: {
     borderRadius: 20,
+    background: 'white',
     boxShadow: 'inset 0 1px 4px 2px rgba(0,0,0,0.12)',
   },
   rounded: {
