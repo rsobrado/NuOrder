@@ -44,23 +44,30 @@ const useStyles = makeStyles((theme) => ({
     textShadow: '1px 1px 2px rgba(0,0,0,0.22), 2px 2px 4px rgba(0,0,0,0.22)',
     maxWidth: 380,
   },
+  pagination: {
+    justifyContent: 'center',
+    padding: '20px 0',
+  },
 }))
 
 export default function Dashboard() {
   const classes = useStyles()
   const [issues, setIssues] = useState([])
   const [value, setValue] = useState('')
+  const [page, setPage] = useState(1)
+  const handleChange = (event, value) => {
+    setPage(value)
+  }
 
   useEffect(() => {
     async function loadData() {
       const result = await axios(
-        `https://api.github.com/search/issues?q=${value}+repo:facebook/react`
+        `https://api.github.com/search/issues?q=${value}+repo:facebook/react&page=${page}+&per_page=30`
       )
-      console.log(result.data)
       setIssues(result.data.items)
     }
     loadData()
-  }, [])
+  }, [page, value])
 
   return (
     <Container maxWidth="lg">
@@ -88,10 +95,18 @@ export default function Dashboard() {
                 </TableBody>
               </Table>
             </TableContainer>
+
+            <Pagination
+              count={10}
+              page={page}
+              onChange={handleChange}
+              classes={{
+                ul: classes.pagination,
+              }}
+            />
           </Paper>
         </Grid>
       </Grid>
     </Container>
   )
 }
-
