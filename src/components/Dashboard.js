@@ -49,6 +49,28 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     padding: '20px 0',
   },
+  listbox: {
+    boxShadow: 'none',
+    padding: 0,
+    margin: 0,
+  },
+  groupUl: {
+    padding: 0,
+    margin: 0,
+  },
+  option: {
+    borderBottom: `1px solid rgba(0,0,0,0.1)`,
+    // Hover
+    '&[data-focus="true"]': {
+      backgroundColor: 'rgba(0,0,0,0.05)',
+      borderColor: 'transparent',
+    },
+    // Selected
+    '&[aria-selected="true"]': {
+      backgroundColor: 'rgba(0,0,0,0.05)',
+      borderColor: 'transparent',
+    },
+  },
 }))
 
 export default function Dashboard() {
@@ -62,6 +84,9 @@ export default function Dashboard() {
 
   const handleSearch = (event) => {
     setValue(event.target.value)
+  }
+  const handleAuto = (event) => {
+    setValue(event.target.innerHTML)
   }
 
   useEffect(() => {
@@ -101,6 +126,7 @@ export default function Dashboard() {
                             freeSolo
                             fullWidth={true}
                             options={issues.map((option) => option.title)}
+                            onChange={handleAuto}
                             classes={{
                               option: classes.option,
                               listbox: classes.listbox,
@@ -115,7 +141,7 @@ export default function Dashboard() {
                                 variant="filled"
                                 className={classes.search}
                                 fullWidth={true}
-                                onChange={handleSearch}
+                                // onChange={handleSearch}
                               />
                             )}
                           />
