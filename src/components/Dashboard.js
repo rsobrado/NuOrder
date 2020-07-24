@@ -12,10 +12,11 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import TextField from '@material-ui/core/TextField'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 import Pagination from '@material-ui/lab/Pagination'
 
-import SearchBar from './SearchBar'
 import Issues from './Issues'
 
 const useStyles = makeStyles((theme) => ({
@@ -55,16 +56,27 @@ export default function Dashboard() {
   const [issues, setIssues] = useState([])
   const [value, setValue] = useState('')
   const [page, setPage] = useState(1)
-  const handleChange = (event, value) => {
+  const handlePagination = (event, value) => {
     setPage(value)
+  }
+
+  const handleSearch = (event) => {
+    setValue(event.target.value)
   }
 
   useEffect(() => {
     async function loadData() {
-      const result = await axios(
-        `https://api.github.com/search/issues?q=${value}+repo:facebook/react&page=${page}+&per_page=30`
-      )
-      setIssues(result.data.items)
+      if (value === '') {
+        const result = await axios(
+          `https://api.github.com/search/issues?q=repo:facebook/react&page=${page}+&per_page=30`
+        )
+        setIssues(result.data.items)
+      } else {
+        const result = await axios(
+          `https://api.github.com/search/issues?q=${value}+&repo:facebook/react&page=${page}+&per_page=30`
+        )
+        setIssues(result.data.items)
+      }
     }
     loadData()
   }, [page, value])
@@ -84,7 +96,29 @@ export default function Dashboard() {
                     <TableCell>
                       <Grid container spacing={4} direction="row">
                         <Grid item xs={12} lg={12}>
-                          <SearchBar issues={issues} />
+                          <Autocomplete
+                            id="search-issue"
+                            freeSolo
+                            fullWidth={true}
+                            options={issues.map((option) => option.title)}
+                            classes={{
+                              option: classes.option,
+                              listbox: classes.listbox,
+                              popper: classes.popper,
+                              groupUl: classes.groupUl,
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Search Issues..."
+                                margin="normal"
+                                variant="filled"
+                                className={classes.search}
+                                fullWidth={true}
+                                onChange={handleSearch}
+                              />
+                            )}
+                          />
                         </Grid>
                       </Grid>
                     </TableCell>
@@ -99,7 +133,7 @@ export default function Dashboard() {
             <Pagination
               count={10}
               page={page}
-              onChange={handleChange}
+              onChange={handlePagination}
               classes={{
                 ul: classes.pagination,
               }}
