@@ -74,14 +74,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 export default function Dashboard() {
   const classes = useStyles()
   const [issues, setIssues] = useState([])
   const [value, setValue] = useState('')
   const [page, setPage] = useState(1)
   const timeRef = useRef(0);
-  //
+  
   const handlePagination = (event, value) => {
     setPage(value)
   }
@@ -170,7 +169,6 @@ export default function Dashboard() {
                 </TableBody>
               </Table>
             </TableContainer>
-
             <Pagination
               count={10}
               page={page}
