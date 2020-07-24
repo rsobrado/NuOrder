@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -74,21 +74,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+
 export default function Dashboard() {
   const classes = useStyles()
   const [issues, setIssues] = useState([])
   const [value, setValue] = useState('')
   const [page, setPage] = useState(1)
+  const timeRef = useRef(0);
+  //
   const handlePagination = (event, value) => {
     setPage(value)
   }
 
-  const handleSearch = (event) => {
-    setValue(event.target.value)
-  }
-  const handleAuto = (event) => {
-    setValue(event.target.innerHTML)
-  }
+  const handleSearch = useCallback((event) => {
+    if(timeRef.current >= 400) {
+      setValue(event.target.value);
+      timeRef.current = 0;
+    } 
+  }, []);
+
+  const handleAuto = useCallback((event) => {
+    if(timeRef.current >= 400) {
+      setValue(event.target.innerHTML);
+      timeRef.current = 0;
+    } 
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -106,6 +116,11 @@ export default function Dashboard() {
     }
     loadData()
   }, [page, value])
+
+  useEffect(() => {
+    const intervalID = setInterval(() => timeRef.current += 100, 100);
+    return () => clearInterval(intervalID);
+  }, []);
 
   return (
     <Container maxWidth="lg">
@@ -142,7 +157,7 @@ export default function Dashboard() {
                                 variant="filled"
                                 className={classes.search}
                                 fullWidth={true}
-                                // onChange={handleSearch}
+                                onChange={handleSearch}
                               />
                             )}
                           />
