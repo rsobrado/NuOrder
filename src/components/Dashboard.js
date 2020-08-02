@@ -79,25 +79,30 @@ export default function Dashboard() {
   const [issues, setIssues] = useState([])
   const [value, setValue] = useState('')
   const [page, setPage] = useState(1)
-  const timeRef = useRef(0);
-  
+  const timeRef = useRef(0)
+
   const handlePagination = (event, value) => {
     setPage(value)
   }
 
   const handleSearch = useCallback((event) => {
-    if(timeRef.current >= 400) {
-      setValue(event.target.value);
-      timeRef.current = 0;
-    } 
-  }, []);
+    if (timeRef.current >= 400) {
+      setValue(event.target.value)
+      timeRef.current = 0
+    }
+  }, [])
 
   const handleAuto = useCallback((event) => {
-    if(timeRef.current >= 400) {
-      setValue(event.target.innerHTML);
-      timeRef.current = 0;
-    } 
-  }, []);
+    if (timeRef.current >= 400) {
+      setValue(event.target.innerHTML)
+      timeRef.current = 0
+    }
+  }, [])
+
+  useEffect(() => {
+    setInterval(() => (timeRef.current += 100), 100)
+  }, [])
+
 
   useEffect(() => {
     async function loadData() {
@@ -115,10 +120,6 @@ export default function Dashboard() {
     }
     loadData()
   }, [page, value])
-
-  useEffect(() => {
-    setInterval(() => timeRef.current += 100, 100);
-  }, []);
 
   return (
     <Container maxWidth="lg">
