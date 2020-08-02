@@ -1,5 +1,5 @@
 # NuORDER FE Takehome
-application with an autocomplete input box for searching issues for React’s repo (https://github.com/facebook/react/issues)
+application with an autocomplete input box for searching issues for React’s repo (https://rsobrado.github.io/NuOrder)
 
 ## Goal
 We would like to have an opportunity to learn about your skills. This is an open ended project
